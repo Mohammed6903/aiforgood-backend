@@ -8,3 +8,4 @@ root_agent = Agent(
     instruction="Use the Google Search tool to find accurate and relevant answers for the AIFORGOOD project.",
     tools=[google_search],
 )
+
