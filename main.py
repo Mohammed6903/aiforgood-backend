@@ -23,6 +23,8 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.api import chatbot, blood_management, auth, donors
+
 from app.agents.agent import root_agent
 warnings.filterwarnings("ignore", category=UserWarning, module="pydantic")
 
@@ -154,14 +156,14 @@ app.add_middleware(
         "http://localhost:8000"
     ],
     allow_credentials=True,
-    allow_methods=["GET", "POST", "OPTIONS"], # <-- This MUST be here
+    allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=["*"],
 )
 
-from app.api import chatbot, blood_management, auth
 app.include_router(chatbot.router, prefix="/chatbot", tags=["Chatbot"])
 app.include_router(blood_management.router, prefix="/blood", tags=["Blood Management"])
 app.include_router(auth.router, prefix="/auth", tags=["Auth"])
+app.include_router(donors.router, prefix="/donors", tags=["Donors"])
 
 @app.get("/")
 async def root():

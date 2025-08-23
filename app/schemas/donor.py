@@ -1,6 +1,7 @@
 from typing import List, Optional
 from pydantic import BaseModel
-from donation import Donation
+from .donation import Donation
+from .location import Location
 
 class Donor(BaseModel):
     id: int
@@ -8,6 +9,6 @@ class Donor(BaseModel):
     blood_type: str
     last_donation_date: Optional[str] = None
     total_donations: int = 0
-    latitude: Optional[float] = None
-    longitude: Optional[float] = None
-    donations: Optional[List['Donation']] = []
+    location_id: Optional[int] = None
+    location: Optional[Location] = None
+    donations: Optional[List[Donation]] = []

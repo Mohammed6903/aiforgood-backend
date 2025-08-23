@@ -4,3 +4,4 @@ pydantic
 dotenv
 prisma
 google-adk
+bcrypt

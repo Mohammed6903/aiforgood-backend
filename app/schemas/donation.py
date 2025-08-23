@@ -1,15 +1,12 @@
 from typing import Optional
 from pydantic import BaseModel
+from .location import Location
 
 class Donation(BaseModel):
     id: int
     donor_id: int
-    date: str
-    blood_type: str
     quantity: int
-    city: str
-    state: str
-    district: str
-    latitude: Optional[float] = None
-    longitude: Optional[float] = None
+    date: str  # Consider using datetime if you want to match DateTime type
+    blood_type: str
     notes: Optional[str] = None
+    location_id: Optional[Location] = None

@@ -1,9 +1,8 @@
-# Placeholder for database session setup
 from prisma import Prisma
 
-prisma = Prisma()
+prisma: Prisma = Prisma()
 
-async def get_db():
+async def get_db() -> Prisma:
     if not prisma.is_connected():
         await prisma.connect()
     return prisma

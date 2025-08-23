@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Optional
+from pydantic import BaseModel
 from typing import Optional
 from pydantic import BaseModel
 
@@ -10,6 +10,5 @@ class BloodRequest(BaseModel):
     status: str
     requested_at: Optional[str] = None
     fulfilled_at: Optional[str] = None
-    latitude: Optional[float] = None
-    longitude: Optional[float] = None
-    matched_donor: Optional[int] = None
+    matched_donor_id: Optional[int] = None
+    location_id: Optional[int] = None
