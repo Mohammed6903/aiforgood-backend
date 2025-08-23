@@ -15,13 +15,12 @@ async def create_user(data: dict, db: Prisma = Depends(get_db)):
     return await db.user.create(data=donor.model_dump())
 
 async def get_user_by_email(email: str, db: Prisma = Depends(get_db)):
-
     return await db.user.find_unique(where={"email": email})
 
 async def get_nearby_donors(
-    user_latitude: float, 
-    user_longitude: float, 
-    radius_km: float = 5.0,
+    lat: float, 
+    lng: float, 
+    radius: float = 5.0,
     blood_type: Optional[str] = None,
     max_results: int = 50,
     available_only: bool = True,
@@ -67,7 +66,7 @@ async def get_nearby_donors(
     """
 
     conditions = []
-    params = [user_longitude, user_latitude, radius_km]
+    params = [lng, lat, radius]
     param_count = 3
 
     if blood_type:
@@ -147,3 +146,6 @@ async def get_blood_request(request_id: int, db: Prisma = Depends(get_db)):
 
 async def get_blood_requests_by_user(user_id: int, db: Prisma = Depends(get_db)):
     return await db.blood_request.find_many(where={"requester_id": user_id})
+
+async def get_faq(db: Prisma = Depends(get_db)):
+    return await db.faq.find_many()
