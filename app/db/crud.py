@@ -42,6 +42,8 @@ async def get_nearby_donors(
         d.blood_type,
         d.last_donation_date,
         d.total_donations,
+        ST_Y(l.coords::geometry) as lat,
+        ST_X(l.coords::geometry) as lng,
         l.name as location_name,
         -- Distance in meters (no rounding needed)
         ST_Distance(
@@ -125,7 +127,9 @@ async def get_nearby_donors(
                 'distance_meters': float(row['distance_meters']),
                 'distance_km': float(row['distance_km']),
                 'is_available': _is_donor_available(row['last_donation_date']),
-                'days_since_last_donation': _days_since_last_donation(row['last_donation_date'])
+                'days_since_last_donation': _days_since_last_donation(row['last_donation_date']),
+                'lat': float(row['lat']),
+                'lng': float(row['lng'])
             }
             donors.append(donor_data)
         return donors
