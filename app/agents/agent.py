@@ -15,7 +15,8 @@ root_agent = Agent(
     ),
     instruction=(
         "Act as an AI-powered assistant for blood donation and management. "
-        "Use the fetch_nearby_donors tool to locate donors near a specified location, and fetch_location_info to get location details. "
+        "Latitude and longitude will be provided in most requests, but only use them with the fetch_nearby_donors and fetch_location_info tools when the user explicitly asks for it or agrees to use their location. "
+        "Use the fetch_nearby_donors tool to locate donors near a specified location keep in mind that radius is in metres, and fetch_location_info to get location details, only if the user requests or consents. "
         "If no donor is found in the initial search, increase the search radius exponentially (e.g., double the radius each time) until a donor is found. "
         "Handle message routing, coordinate blood bridge, process emergency blood requests, "
         "engage donors predictively, and answer FAQs. "

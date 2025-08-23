@@ -1,16 +1,21 @@
 from app.db.crud import get_nearby_donors
 from typing import Any, Dict
 from geopy.geocoders import Nominatim
-from google.adk.tools import LongRunningFunctionTool
+from google.adk.tools import FunctionTool
+from app.db.session import prisma, Prisma
 
-def fetch_nearby_donors(lng: float, lat: float, radius: float) -> list[Dict[str, Any]]:
-    return get_nearby_donors(lng, lat, radius)
+async def fetch_nearby_donors(lat: float, lng: float, radius: float) -> list[Dict[str, Any]]:
+    print("finding")
+    if not prisma.is_connected():
+        await prisma.connect()
+    return await get_nearby_donors(lng, lat, radius, db=prisma)
 
-long_running_tool = LongRunningFunctionTool(func=fetch_nearby_donors)
+function_tool = FunctionTool(func=fetch_nearby_donors)
 
 def fetch_location_info(lat: float, lng: float) -> dict:
     geolocator = Nominatim(user_agent="aiforgood")
     location = geolocator.reverse((lat, lng), language='en')
+    print("Finding")
     if location and location.raw and 'address' in location.raw:
         address = location.raw['address']
         return {
@@ -21,4 +26,4 @@ def fetch_location_info(lat: float, lng: float) -> dict:
         }
     return {}
 
-long_running_tool = LongRunningFunctionTool(func=fetch_location_info)
+function_tool = FunctionTool(func=fetch_location_info)
