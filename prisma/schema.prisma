@@ -1,0 +1,94 @@
+generator client {
+  provider             = "prisma-client-py"
+  recursive_type_depth = -1
+}
+
+datasource db {
+	provider = "postgresql"
+	url      = env("DATABASE_URL")
+}
+
+model User {
+	id          Int      @id @default(autoincrement())
+	name        String
+	email       String   @unique
+	phone       String?
+	created_at  DateTime @default(now())
+	updated_at  DateTime @updatedAt
+	donors      Donor[]
+	volunteers  Volunteer[]
+	badges      Badge[]
+	leaderboard LeaderboardEntry[]
+	bloodRequests BloodRequest[] @relation("UserBloodRequests")
+	engagements Engagement[]
+}
+
+model Donor {
+  id                 Int      @id @default(autoincrement())
+  user               User     @relation(fields: [user_id], references: [id])
+  user_id            Int
+  blood_type         String
+  last_donation_date DateTime?
+  total_donations    Int     @default(0)
+  latitude           Float?
+  longitude          Float?
+  donations          Donation[]
+}
+
+model Donation {
+  id           Int      @id @default(autoincrement())
+  donor        Donor    @relation(fields: [donor_id], references: [id])
+  donor_id     Int
+  date         DateTime
+  blood_type   String
+  location     String?      // Optional: can store address or place name
+  latitude     Float?       // Optional: for geospatial queries
+  longitude    Float?       // Optional: for geospatial queries
+  notes        String?      // Optional: additional info
+}
+
+model Volunteer {
+	id         Int      @id @default(autoincrement())
+	user       User     @relation(fields: [user_id], references: [id])
+	user_id    Int
+	joined_at  DateTime?
+	activities String[]
+}
+
+model Badge {
+	id          Int      @id @default(autoincrement())
+	name        String
+	description String?
+	user        User     @relation(fields: [user_id], references: [id])
+	user_id     Int
+	awarded_at  DateTime?
+}
+
+model LeaderboardEntry {
+	id      Int    @id @default(autoincrement())
+	user    User   @relation(fields: [user_id], references: [id])
+	user_id Int
+	rank    Int
+	score   Float
+}
+
+model BloodRequest {
+	id           Int      @id @default(autoincrement())
+	requester    User     @relation("UserBloodRequests", fields: [requester_id], references: [id])
+	requester_id Int
+	blood_type   String
+    status       String
+    requested_at DateTime?
+    fulfilled_at DateTime?
+    latitude     Float?
+    longitude    Float?
+}
+
+model Engagement {
+	id           Int      @id @default(autoincrement())
+	user         User     @relation(fields: [user_id], references: [id])
+	user_id      Int
+	engagement_score Float
+	last_active  DateTime?
+	activity_log String[]
+}
