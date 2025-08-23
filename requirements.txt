@@ -1,5 +1,6 @@
-fastapi
+fastapi[standard]
 uvicorn
 pydantic
 dotenv
 prisma
+google-adk
