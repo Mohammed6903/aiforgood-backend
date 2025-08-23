@@ -21,6 +21,7 @@ from google.genai import types
 from fastapi import FastAPI, WebSocket
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.agents.agent import root_agent
 warnings.filterwarnings("ignore", category=UserWarning, module="pydantic")
@@ -144,6 +145,18 @@ app = FastAPI(title="AI for Good - Blood Management & Chatbot")
 
 STATIC_DIR = Path("static")
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        "http://localhost:8000"
+    ],
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "OPTIONS"], # <-- This MUST be here
+    allow_headers=["*"],
+)
 
 from app.api import chatbot, blood_management, auth
 app.include_router(chatbot.router, prefix="/chatbot", tags=["Chatbot"])

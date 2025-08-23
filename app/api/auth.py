@@ -15,6 +15,6 @@ async def login(request: LoginRequest, db=Depends(get_db)):
     if not user or not bcrypt.checkpw(request.password.encode("utf-8"), user.password.encode("utf-8")):
         raise HTTPException(status_code=401, detail="Invalid email or password")
     return {
-        "message": f"Login successful! Redirect to {user['role'].lower()} dashboard.",
-        "role": user["role"]
+        "message": f"Login successful! Redirect to {user.role.lower()} dashboard.",
+        "role": user.role
     }
