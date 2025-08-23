@@ -1,6 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel
 from app.db.crud import get_user_by_email, create_user
+from app.db.session import get_db
 import bcrypt
 
 router = APIRouter()
@@ -21,8 +22,8 @@ class RegisterRequest(BaseModel):
 
 
 @router.post("/login")
-async def login(request: LoginRequest):
-    user = await get_user_by_email(request.email)
+async def login(request: LoginRequest, db=Depends(get_db)):
+    user = await get_user_by_email(request.email, db)
     if not user or not bcrypt.checkpw(request.password.encode("utf-8"), user.password.encode("utf-8")):
         raise HTTPException(status_code=401, detail="Invalid email or password")
     return {
@@ -31,8 +32,8 @@ async def login(request: LoginRequest):
     }
     
 @router.post("/register")
-async def register(request: RegisterRequest):
-    existing_user = await get_user_by_email(request.email)
+async def register(request: RegisterRequest, db=Depends(get_db)):
+    existing_user = await get_user_by_email(request.email, db)
     if existing_user:
         raise HTTPException(status_code=400, detail="Email already registered")
     hashed_pw = bcrypt.hashpw(request.password.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")

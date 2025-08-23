@@ -16,7 +16,7 @@ async def get_user_by_email(email: str, db: Prisma = Depends(get_db)):
 
 async def get_nearby_donors(lng: float, lat: float, radius=10, db: Prisma = Depends(get_db)):
     donors = await db.query_raw('''
-        SELECT d.id, u.name, u.email, u.phone,
+        SELECT d.id, u.name, u.email, u.phone,d.blood_type,
                ST_Distance(l.coords::geography,
                     ST_SetSRID(ST_MakePoint($1, $2), 4326)::geography) AS distance
         FROM "Donor" d
