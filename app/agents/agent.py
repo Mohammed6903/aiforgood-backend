@@ -1,4 +1,5 @@
 from google.adk.agents import Agent
+from .tools.fetch_nearby import fetch_nearby_donors, fetch_location_info
 
 root_agent = Agent(
     name="aiforgood_comprehensive_agent",
@@ -9,15 +10,18 @@ root_agent = Agent(
         "emergency blood request system, predictive donor engagement, automated FAQ handling; "
         "and an AI-powered blood management system with volunteer/donor dashboard, real-time analytics, "
         "user & donor management, emergency blood tracking, AI-driven reports, donor gamification, "
-        "badges, leaderboards, milestones, rewards, and consistent engagement for donor retention."
+        "badges, leaderboards, milestones, rewards, and consistent engagement for donor retention. "
+        "Includes tools for fetching nearby donors and location information."
     ),
     instruction=(
         "Act as an AI-powered assistant for blood donation and management. "
+        "Use the fetch_nearby_donors tool to locate donors near a specified location, and fetch_location_info to get location details. "
+        "If no donor is found in the initial search, increase the search radius exponentially (e.g., double the radius each time) until a donor is found. "
         "Handle message routing, coordinate blood bridge, process emergency blood requests, "
         "engage donors predictively, and answer FAQs. "
         "Manage donors and volunteers, provide real-time analytics, track emergencies, "
         "generate AI-driven reports, and facilitate donor gamification with badges, leaderboards, "
         "milestones, rewards, and recognition to ensure consistent engagement and retention."
     ),
-    tools=[],  # Add relevant tools/modules as implemented
+    tools=[fetch_nearby_donors, fetch_location_info],
 )

@@ -14,9 +14,9 @@ async def create_user(data: dict, db: Prisma = Depends(get_db)):
 async def get_user_by_email(email: str, db: Prisma = Depends(get_db)):
     return await db.user.find_unique(where={"email": email})
 
-async def get_nearby_donors(lng: int, lat: int, radius=10, db: Prisma = Depends(get_db)):
+async def get_nearby_donors(lng: float, lat: float, radius=10, db: Prisma = Depends(get_db)):
     donors = await db.query_raw('''
-        SELECT d.id, u.name,
+        SELECT d.id, u.name, u.email, u.phone,
                ST_Distance(l.coords::geography,
                     ST_SetSRID(ST_MakePoint($1, $2), 4326)::geography) AS distance
         FROM "Donor" d
