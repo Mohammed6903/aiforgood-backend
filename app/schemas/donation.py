@@ -6,7 +6,10 @@ class Donation(BaseModel):
     donor_id: int
     date: str
     blood_type: str
-    location: Optional[str] = None
+    quantity: int
+    city: str
+    state: str
+    district: str
     latitude: Optional[float] = None
     longitude: Optional[float] = None
     notes: Optional[str] = None
