@@ -1,5 +1,6 @@
 from google.adk.agents import Agent
 from .tools.fetch_nearby import fetch_nearby_donors, fetch_location_info
+from google.adk.tools import google_search
 
 root_agent = Agent(
     name="aiforgood_comprehensive_agent",
@@ -24,5 +25,5 @@ root_agent = Agent(
         "generate AI-driven reports, and facilitate donor gamification with badges, leaderboards, "
         "milestones, rewards, and recognition to ensure consistent engagement and retention."
     ),
-    tools=[fetch_nearby_donors, fetch_location_info],
+    tools=[fetch_nearby_donors, fetch_location_info, google_search],
 )

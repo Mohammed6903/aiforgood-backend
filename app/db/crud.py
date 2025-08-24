@@ -150,6 +150,3 @@ async def get_blood_request(request_id: int, db: Prisma = Depends(get_db)):
 
 async def get_blood_requests_by_user(user_id: int, db: Prisma = Depends(get_db)):
     return await db.blood_request.find_many(where={"requester_id": user_id})
-
-async def get_faq(db: Prisma = Depends(get_db)):
-    return await db.faq.find_many()
