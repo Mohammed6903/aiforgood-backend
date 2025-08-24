@@ -33,5 +33,5 @@ jobs:
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v3
       with:
-        app-name: ai-for-good
+        app-name: aiforgood
         images: ${{ secrets.ACR_LOGIN_SERVER }}/fastapi-demo:latest
