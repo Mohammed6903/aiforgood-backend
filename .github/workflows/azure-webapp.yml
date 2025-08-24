@@ -18,7 +18,7 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    - name: Build and push Docker image
+    - name: Build and push Docker image 
       uses: azure/docker-login@v2
       with:
         login-server: ${{ secrets.ACR_LOGIN_SERVER }}
@@ -27,11 +27,11 @@ jobs:
 
     - name: Build and push image to Azure Container Registry
       run: |
-        docker build -t ${{ secrets.ACR_LOGIN_SERVER }}/fastapi-demo:latest .
-        docker push ${{ secrets.ACR_LOGIN_SERVER }}/fastapi-demo:latest
+        docker build -t ${{ secrets.ACR_LOGIN_SERVER }}/aiforgood:latest .
+        docker push ${{ secrets.ACR_LOGIN_SERVER }}/aiforgood:latest
 
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v3
       with:
         app-name: aiforgood
-        images: ${{ secrets.ACR_LOGIN_SERVER }}/fastapi-demo:latest
+        images: ${{ secrets.ACR_LOGIN_SERVER }}/aiforgood:latest
